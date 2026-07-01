@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Учёт рабочего времени</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">⏱</span>
+      <div class="brand-text">
+        <h1>Табель часов</h1>
+        <p>Учёт времени и расчёт зарплаты</p>
+      </div>
+    </div>
+
+    <div class="period-picker glass">
+      <button id="prevMonth" class="icon-btn" aria-label="Предыдущий месяц">‹</button>
+      <select id="monthSelect" aria-label="Месяц"></select>
+      <input type="number" id="yearInput" aria-label="Год" min="2000" max="2100">
+      <button id="nextMonth" class="icon-btn" aria-label="Следующий месяц">›</button>
+    </div>
+  </header>
+
+  <section class="stats-grid">
+    <div class="stat-card glass">
+      <span class="stat-label">Рабочих дней</span>
+      <span class="stat-value" id="statDays">0</span>
+    </div>
+    <div class="stat-card glass">
+      <span class="stat-label">Всего часов</span>
+      <span class="stat-value" id="statHours">0.0</span>
+    </div>
+    <div class="stat-card glass">
+      <span class="stat-label">Среднее в день</span>
+      <span class="stat-value" id="statAvg">0.0</span>
+    </div>
+    <div class="stat-card glass highlight">
+      <span class="stat-label">Итого к выплате</span>
+      <span class="stat-value" id="statTotal">0 ₸</span>
+    </div>
+  </section>
+
+  <section class="panel glass table-panel">
+    <div class="panel-header">
+      <h2>Журнал смен</h2>
+      <div class="panel-actions">
+        <button id="addRowBtn" class="btn btn-primary">+ Добавить день</button>
+        <button id="clearMonthBtn" class="btn btn-danger-ghost">Очистить месяц</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table id="timeTable">
+        <thead>
+          <tr>
+            <th class="col-date">Дата</th>
+            <th class="col-day">День</th>
+            <th class="col-time">Начало</th>
+            <th class="col-time">Окончание</th>
+            <th class="col-break">Перерыв, мин</th>
+            <th class="col-hours">Часов</th>
+            <th class="col-comment">Комментарий</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <p id="emptyState" class="empty-state" hidden>Нет записей за этот месяц. Добавьте первый день.</p>
+    </div>
+  </section>
+
+  <section class="panel glass payroll-panel">
+    <h2>Расчёт зарплаты</h2>
+    <div class="payroll-grid">
+      <label class="field">
+        <span>Ставка в час</span>
+        <input type="number" id="rateInput" min="0" step="0.01" placeholder="0">
+      </label>
+      <label class="field">
+        <span>Премия</span>
+        <input type="number" id="bonusInput" min="0" step="0.01" placeholder="0">
+      </label>
+      <label class="field">
+        <span>Доп. выплаты</span>
+        <input type="number" id="extraInput" min="0" step="0.01" placeholder="0">
+      </label>
+      <label class="field">
+        <span>Штрафы / вычеты</span>
+        <input type="number" id="penaltyInput" min="0" step="0.01" placeholder="0">
+      </label>
+    </div>
+
+    <div class="payroll-formula">
+      <span id="formulaText">(0 ч × 0) + 0 + 0 − 0 = </span>
+      <strong id="formulaResult">0 ₸</strong>
+    </div>
+  </section>
+
+  <footer class="export-bar">
+    <button id="exportXlsxBtn" class="btn btn-ghost">⬇ Экспорт в Excel</button>
+    <button id="exportCsvBtn" class="btn btn-ghost">⬇ Экспорт в CSV</button>
+    <button id="printBtn" class="btn btn-ghost">🖨 Печать</button>
+  </footer>
+
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
